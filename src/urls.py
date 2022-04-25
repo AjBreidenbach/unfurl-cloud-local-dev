@@ -1,4 +1,5 @@
-BASE_URL = 'http://skelaware.abreidenbach.com:3000'
+import os
+BASE_URL = os.getenv('BASE_URL')
 SIGN_IN_URL = BASE_URL + '/users/sign_in'
 
 def environment_variables_url(project_path):
