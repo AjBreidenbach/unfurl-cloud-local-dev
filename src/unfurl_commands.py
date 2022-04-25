@@ -44,4 +44,25 @@ class UnfurlCommandRunner():
         args = ['unfurl', '--home', '""', 'export', env.get('DEPLOY_PATH')]
         export_command = subprocess.run(args, cwd=self.dashboard_dir, env=env, capture_output=True)
 
+        print(export_command.stderr.decode('utf-8'))
+
+        if export_command.returncode == 0:
+            ensemble = os.path.join(self.dashboard_dir, env.get('DEPLOY_PATH'), 'ensemble.json')
+            Path(ensemble).write_bytes(export_command.stdout)
+
         return export_command
+
+    def unfurl_commit(self, env):
+        deploy_path = env.get('DEPLOY_PATH')
+        workflow = env.get('WORKFLOW', 'deploy')
+        args = ['unfurl', 'commit' , '-m"%s from local development script for %s"' % (workflow, deploy_path), deploy_path]
+        return subprocess.run(args, cwd=self.dashboard_dir, env=env)
+
+    def git_pull(self, env=None):
+        args = ['git', 'pull', '--no-rebase']
+        return subprocess.run(args, cwd=self.dashboard_dir, env=env)
+
+
+    def git_push(self, env=None):
+        args = ['git', 'push', '-o', 'ci.skip']
+        return subprocess.run(args, cwd=self.dashboard_dir, env=env)

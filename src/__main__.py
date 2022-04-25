@@ -12,10 +12,12 @@ def environment_name_from_deploy_path(deploy_path):
     return splits[1]
 
 def verify_subcommand(command_name, completed_process):
-    print(completed_process)
+    if completed_process is None: return
     if completed_process.returncode != 0:
-        print('%s failed' % command_name)
+        print(completed_process.args)
+        print('%s failed with %' % (command_name, completed_process.returncode))
         sys.exit(completed_process.returncode)
+    else: print('finished', command_name)
 
 def main():
     deploy_path = sys.argv[1]
@@ -35,6 +37,9 @@ def main():
     verify_subcommand('Unfurl clone', uf_commands.unfurl_clone(environment_variables))
     verify_subcommand('Unfurl deploy', uf_commands.unfurl_deploy(environment_variables))
     verify_subcommand('Unfurl export', uf_commands.unfurl_export(environment_variables))
+    verify_subcommand('Unfurl commit', uf_commands.unfurl_commit(environment_variables))
+    verify_subcommand('Git pull', uf_commands.git_pull(environment_variables))
+    verify_subcommand('Git push', uf_commands.git_push(environment_variables))
 
 if __name__ == '__main__':
     main()
