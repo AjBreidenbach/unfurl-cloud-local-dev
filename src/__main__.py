@@ -38,8 +38,15 @@ def main():
     verify_subcommand('Unfurl deploy', uf_commands.unfurl_deploy(environment_variables))
     verify_subcommand('Unfurl export', uf_commands.unfurl_export(environment_variables))
     verify_subcommand('Unfurl commit', uf_commands.unfurl_commit(environment_variables))
-    verify_subcommand('Git pull', uf_commands.git_pull(environment_variables))
-    verify_subcommand('Git push', uf_commands.git_push(environment_variables))
+
+    environment_variables['WORKFLOW'] = 'undeploy'
+
+    verify_subcommand('Unfurl undeploy', uf_commands.unfurl_deploy(environment_variables))
+    verify_subcommand('Unfurl export', uf_commands.unfurl_export(environment_variables))
+    verify_subcommand('Unfurl commit', uf_commands.unfurl_commit(environment_variables))
+
+    #verify_subcommand('Git pull', uf_commands.git_pull(environment_variables))
+    #verify_subcommand('Git push', uf_commands.git_push(environment_variables))
 
 if __name__ == '__main__':
     main()

@@ -10,7 +10,7 @@ def fetch(session, project_path, environment=None):
         envvars = json.loads(response.text).get('variables', [])
 
     if environment is not None:
-        envvars = [v for v in envvars if v.get('environment_scope') == environment]
+        envvars = [v for v in envvars if v.get('environment_scope') == environment] + [v for v in envvars if v.get('environment_scope') == '*']
 
     env_dict = {}
 
